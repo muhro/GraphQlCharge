@@ -1,4 +1,4 @@
-'use strict';
+
 
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList, GraphQLSchema} = require(
     'graphql');
@@ -38,6 +38,7 @@ const animalType = new GraphQLObjectType({
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
+    description: 'Main query',
     fields: {
         animals: {
             type: new GraphQLList(animalType),
