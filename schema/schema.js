@@ -1,5 +1,4 @@
 
-
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -10,6 +9,10 @@ const {
     } = require(
 
     'graphql');
+
+const animal = require('../models/animal');
+const species = require('../models/species');
+const category = require('../models/category');
 
 const animalData = [
     {
@@ -74,6 +77,7 @@ const speciesType = new GraphQLObjectType({
     }),
 });
 
+
 const categoryType = new GraphQLObjectType({
     name: 'category',
     description: 'Animal category',
@@ -82,8 +86,6 @@ const categoryType = new GraphQLObjectType({
         categoryName: {type: GraphQLString},
     }),
 });
-
-
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -108,6 +110,7 @@ const RootQuery = new GraphQLObjectType({
         },
     },
 });
+
 const Mutation = new GraphQLObjectType({
     name: 'MutationType',
     description: 'Mutations...',
@@ -116,7 +119,8 @@ const Mutation = new GraphQLObjectType({
             type: categoryType,
             description: 'Add animal category like Fish, Mammal, etc.',
             args: {
-                categoryName: {type: new GraphQLNonNull(GraphQLString)}, // add necessary imports
+                categoryName: {type: new GraphQLNonNull(GraphQLString)},
+                // add necessary imports
             },
             resolve(parent, args) {
                 const newCategory = new category({
@@ -127,6 +131,8 @@ const Mutation = new GraphQLObjectType({
         },
     },
 });
+
+
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
