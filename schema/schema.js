@@ -129,6 +129,35 @@ const Mutation = new GraphQLObjectType({
                 return newCategory.save();
             },
         },
+
+        addSpecies: {
+            type: speciesType,
+            description: 'Add animal species Cat Dog .. and category id',
+            args: {
+                speciesName: {type: new GraphQLNonNull(GraphQLString)},
+                category: {type: new GraphQLNonNull(GraphQLID)},
+                // add necessary imports
+            },
+            resolve(parent, args) {
+                const newSpecies = new species(args);
+                return newSpecies.save();
+            },
+        },
+
+        addAnimal: {
+            type: animalType,
+            description: 'Add animal species Cat Dog .. and category id',
+            args: {
+                animalName: {type: new GraphQLNonNull(GraphQLString)},
+                species: {type: new GraphQLNonNull(GraphQLID)},
+                // add necessary imports
+            },
+            resolve(parent, args) {
+                const newAnimal = new animal(args);
+                return newAnimal.save();
+            },
+        },
+
     },
 });
 
