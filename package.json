@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/muhro/GraphGL.git"
+    "url": "git+https://github.com/muhro/GraphGLCharge.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/muhro/GraphGL/issues"
+    "url": "https://github.com/muhro/GraphGLCharge/issues"
   },
-  "homepage": "https://github.com/muhro/GraphGL#readme",
+  "homepage": "https://github.com/muhro/GraphGLCharge#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -27,6 +27,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "body-parser": "latest"
   }
 }
