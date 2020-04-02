@@ -6,7 +6,9 @@ const {
     GraphQLList,
     GraphQLSchema,
     GraphQLNonNull,
-    GraphQLBoolean
+    GraphQLEnumType,
+    GraphQLOutputType,
+    GraphQLBoolean,
     } = require(
 
     'graphql');
@@ -16,6 +18,7 @@ const connections = require('../models/connection');
 const levels = require('../models/levels');
 const station = require('../models/station');
 const currentType  = require('../models/currentType');
+const location = require('../models/location');
 
 
 const connectionsSchema = new GraphQLObjectType({
@@ -88,6 +91,16 @@ const levelsSchema = new GraphQLObjectType({
     }),
 });
 
+const locationSchema = new GraphQLObjectType({
+    id: {type: GraphQLID},
+    name:'location',
+    description:'',
+    fields: () => ({
+       coordinates: {type: GraphQLString},
+       type: {type: GraphQLString},
+    }),
+});
+
 const stationSchema = new GraphQLObjectType({
     name: 'station',
     description: 'Connections etc',
@@ -108,6 +121,16 @@ const stationSchema = new GraphQLObjectType({
         Town: {type: GraphQLString},
         StateOrProvince: {type: GraphQLString},
         Postcode: {type: GraphQLString},
+        Location: {
+            type: locationSchema,
+            resolve: async (parent, args) =>{
+                try {
+                    return await location.findById(parent.Location);
+                    } catch (e) {
+                    return new Error(e.message);
+                }
+            }
+        },
     })
 });
 

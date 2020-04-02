@@ -9,17 +9,7 @@ const stationSchema = new Schema({
     Town: String,
     StateOrProvince: String,
     Postcode: String,
-    Location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true,
-        },
-        coordinates: {
-            type: [Number], // first longitude, second latitude
-            required: true,
-        }
-    }
+    Location: [{type: Schema.Types.ObjectId, ref: 'Location'}],
 });
 
 module.exports = mongoose.model('Station', stationSchema);
