@@ -4,17 +4,19 @@ require('dotenv').config();
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const MyGraphQLSchema = require('./schema/schema');
-
+/*
 const authRoute = require('./routes/authRoute');
 const passport = require('./utils/pass');
-
+*/
 const db = require('./db/db');
 const cors = require('cors');
 
 
 
 const app = express();
+/*
 app.use(cors());
+
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 
@@ -36,21 +38,21 @@ const checkAuth = (req, res) => {
 // app.post(auth);
 
 app.use('/auth', authRoute);
-
+*/
 app.use(
     '/graphql',
     (req, res) => {
         graphqlHTTP({
             schema: MyGraphQLSchema,
             graphiql: true,
-            context: {req, res, checkAuth},
+            context: {req, res, /*checkAuth*/},
         })(req, res);
     });
 
 
-/*
+
 db.on('connected', () => {
   console.log('db connected');
 });
- */
+
 app.listen(3000);

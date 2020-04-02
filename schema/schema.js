@@ -10,21 +10,29 @@ const {
 
     'graphql');
 
-const animal = require('../models/animal');
-const species = require('../models/species');
-const category = require('../models/category');
+const ConnectionTypeID = require('../models/connectionTypes');
+const connection = require('../models/connection');
+const LevelID = require('../models/levels');
+const station = require('../models/station');
+const currentTypeID = require('../models/currentType');
 
-const animalType = new GraphQLObjectType({
-    name: 'animal',
-    description: 'Animal name and species',
+
+
+const stationType = new GraphQLObjectType({
+    name: 'station',
+    description: 'Stations',
     fields: () => ({
         id: {type: GraphQLID},
-        animalName: {type: GraphQLString},
-        species: {
-            type: speciesType,
+        Title: {type: GraphQLString},
+        AddressLine1: {type: GraphQLString},
+        Town: {type: GraphQLString},
+        StateOrProvince: {type: GraphQLString},
+        Postcode: {type: GraphQLString},
+        Connections: {
+            type: connectionType,
             resolve: async (parent, args) => {
                 try {
-                    return await species.findById(parent.species);
+                    return await connection.findById(parent.Connections);
                 }
                 catch (e) {
                     return new Error(e.message);
@@ -34,60 +42,104 @@ const animalType = new GraphQLObjectType({
     }),
 });
 
-const speciesType = new GraphQLObjectType({
-    name: 'species',
-    description: 'Animal species',
+const connectionType = new GraphQLObjectType({
+    name: 'connection',
+    description: 'all connections',
     fields: () => ({
         id: {type: GraphQLID},
-        speciesName: {type: GraphQLString},
-        category: {
-            type: categoryType,
+        ConnectionTypeID: {
+            type: connectionTypeType,
             resolve: async (parent, args) => {
                 try {
-                    return await category.findById(parent.category);
+                    return await ConnectionTypeID.findById(parent.ConnectionTypeID);
                 }
                 catch (e) {
                     return new Error(e.message);
                 }
             },
         },
+        LevelID:{
+            type: levels,
+            resolve: async (parent, args) => {
+                try {
+                    return await LevelID.findById(parent.LevelID);
+                }
+                catch (e) {
+                    return new Error(e.message);
+                }
+            },
+        },
+        currentTypeID:{
+            type: currentTypes,
+            resolve: async (parent, args) => {
+                try {
+                    return await currentTypeID.findById(parent.currentTypeID);
+                }
+                catch (e) {
+                    return new Error(e.message);
+                }
+            },
+        },
+        Quantity: {type: GraphQLString},
     }),
 });
 
-const categoryType = new GraphQLObjectType({
-    name: 'category',
-    description: 'Animal category',
+const connectionTypeType = new GraphQLObjectType({
+    name: 'ConnectionTypeID',
+    description: 'connection types',
     fields: () => ({
         id: {type: GraphQLID},
-        categoryName: {type: GraphQLString},
+        FormalName: {type: GraphQLString},
+        Title: {type: GraphQLString},
     }),
+});
+const levels = new GraphQLObjectType({
+    name: 'LevelID',
+    description: '',
+    fields: () => ({
+        id: {type: GraphQLID},
+        Comments: {type: GraphQLString},
+        IsFastChargeCapable: {type: GraphQLString},
+        Title: {type: GraphQLString},
+    })
+});
+
+const currentTypes = new GraphQLObjectType({
+    name: 'currentTypeID',
+    description: '',
+    fields: () => ({
+        id: {type: GraphQLID},
+        Description: {type: GraphQLString},
+        Title: {type: GraphQLString},
+    })
 });
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     description: 'Main query',
     fields: {
-        animals: {
-            type: new GraphQLNonNull(new GraphQLList(animalType)),
-            description: 'Get all animals',
+        stations: {
+            type: new GraphQLNonNull(new GraphQLList(stationType)),
+            description: 'Get station',
             resolve: async (parent, args) => {
                 try {
-                    return await animal.find();
+                    return await station.find();
                 }
                 catch (e) {
                     return new Error(e.message);
                 }
             },
         },
-        animal: {
-            type: animalType,
-            description: 'Get animal by id',
+
+        station: {
+            type: stationType,
+            description: 'Get station by id',
             args: {
                 id: {type: new GraphQLNonNull(GraphQLID)},
             },
             resolve: async (parent, args) => {
                 try {
-                    return await animal.findById(args.id);
+                    return await station.findById(args.id);
                 }
                 catch (e) {
                     return new Error(e.message);
@@ -97,6 +149,7 @@ const RootQuery = new GraphQLObjectType({
     },
 });
 
+/*
 const Mutation = new GraphQLObjectType({
     name: 'MutationType',
     description: 'Mutations...',
@@ -174,8 +227,10 @@ const Mutation = new GraphQLObjectType({
         }
     },
 });
+*/
+
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation,
+   // mutation: Mutation,
 });
