@@ -6,8 +6,6 @@ const {
     GraphQLList,
     GraphQLSchema,
     GraphQLNonNull,
-    GraphQLEnumType,
-    GraphQLOutputType,
     GraphQLBoolean,
     } = require(
 
@@ -92,12 +90,12 @@ const levelsSchema = new GraphQLObjectType({
 });
 
 const locationSchema = new GraphQLObjectType({
-    id: {type: GraphQLID},
     name:'location',
     description:'',
     fields: () => ({
-       coordinates: {type: GraphQLString},
-       type: {type: GraphQLString},
+        id: {type: GraphQLID},
+        coordinates: {type: GraphQLString},
+        type: {type: GraphQLBoolean},
     }),
 });
 
@@ -125,6 +123,7 @@ const stationSchema = new GraphQLObjectType({
             type: locationSchema,
             resolve: async (parent, args) =>{
                 try {
+
                     return await location.findById(parent.Location);
                     } catch (e) {
                     return new Error(e.message);
