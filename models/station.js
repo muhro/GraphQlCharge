@@ -9,8 +9,19 @@ const stationSchema = new Schema({
     Town: String,
     StateOrProvince: String,
     Postcode: String,
-    Location: [{type: Schema.Types.ObjectId, ref: 'Location'}],
+    Location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
 });
+
 
 module.exports = mongoose.model('Station', stationSchema);
 
